@@ -93,11 +93,6 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
           name: 'FUNCTIONS_EXTENSION_VERSION'
           value: '~4'
         }
-        // These app settings needs to match what is in local.settings.json. According to specific syntax (with ':' as section name separator)
-        {
-          name: 'KeyVault:KeyVaultUri'
-          value: keyVault.properties.vaultUri
-        }
         {
           name: 'CosmosDb:DatabaseId'
           value: cosmosDatabaseName
@@ -106,10 +101,10 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
           name: 'CosmosDb:ContainerId'
           value: cosmosContainerName
         }
-        // The settings below are stored in key vault, set the key vault secret names so they can be fetched by app (access policy set below).
+        // The settings below are stored in key vault, set the key vault using reference name, so they can be fetched by app (access policy set below).
         {
-          name: 'CosmosDb:ConnectionStringSecretName'
-          value: cosmosConnectionStringSecretName
+          name: 'CosmosDb:ConnectionString'
+          value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${cosmosConnectionStringSecretName})'
         }
       ]
     }
