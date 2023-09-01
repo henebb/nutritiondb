@@ -13,14 +13,9 @@ public static class NutritionFunctions
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "nutritions")] HttpRequestData req,
         FunctionContext executionContext)
     {
-        var logger = executionContext.GetLogger("NutritionFunctions");
-        logger.LogInformation("C# HTTP trigger function processed a request.");
-
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-
         response.WriteString("Welcome to Azure Functions!");
-
         return response;
     }
 }

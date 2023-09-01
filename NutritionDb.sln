@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".azure", ".azure", "{B14A1162-F495-45B0-9728-F2BD53C3FFB7}"
+	ProjectSection(SolutionItems) = preProject
+		.azure\bicep\functions.bicep = .azure\bicep\functions.bicep
+		.azure\bicep\keyvault.bicep = .azure\bicep\keyvault.bicep
+		.azure\bicep\cosmos.bicep = .azure\bicep\cosmos.bicep
+		.azure\bicep\readme.md = .azure\bicep\readme.md
+		.azure\bicep\main.bicep = .azure\bicep\main.bicep
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutritionDbApi", "NutritionDbApi\NutritionDbApi.csproj", "{A25FE1F4-1B97-4AFE-A3C0-5E28A5AFA26D}"
 EndProject
