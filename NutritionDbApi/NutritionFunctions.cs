@@ -1,4 +1,6 @@
 using System.Net;
+using System.Text.Json;
+using Azure.Core.Serialization;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.Functions.Worker;
@@ -34,8 +36,8 @@ public static class NutritionFunctions
         var itemsToReturn = new List<NutritionReturnItem>();
 
         var container = client.GetContainer(databaseId, containerId);
-        var queryble = container.GetItemLinqQueryable<NutritionItem>();
-        using var feedIterator = queryble.ToFeedIterator();
+        var queryable = container.GetItemLinqQueryable<NutritionItem>();
+        using var feedIterator = queryable.ToFeedIterator();
         while (feedIterator.HasMoreResults) 
         {
             var feedResponse = await feedIterator.ReadNextAsync();
@@ -55,7 +57,8 @@ public static class NutritionFunctions
             );
         }
 
-        await response.WriteAsJsonAsync<List<NutritionReturnItem>>(itemsToReturn);
+        var webSerializer = new JsonObjectSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        await response.WriteAsJsonAsync(itemsToReturn, webSerializer);
 
         return response;
     }
