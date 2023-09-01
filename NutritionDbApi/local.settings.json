@@ -1,7 +1,15 @@
 {
-    "IsEncrypted": false,
-    "Values": {
-        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
-    }
+  "IsEncrypted": true,
+  "Values": {
+    "AzureWebJobsStorage": "CfDJ8H2HWqp9aP5OiD7QHm+DAxISTVSQch31Ak2uH9zdWUGrZ5urgS5kAAyHwdu8s7jIzaLZoNiDsWTjumcmpAGO9ulWqC4TC3BDnwE3H4xGf22JA0UUnc4eJ57OnCnIcwhEgg6bbSvUPNXmZE3kb2A71yIvlm1D6BDEgAskxZLv4JghIl7V7drJz3T5D3hkMvYasPD5ulWSGsRNRQ8kN/Dljv3o/V0uPSASiRe1l34dD5wUcxEsZX5LdGPsZ1XJqPOU04rwFeDh7sev4ygbfxziALfSZZ2pUbR8c1LGeUEjBHareZ1rtZhGZgY+BP6T+t4Lwwg+bLt3nny6YBmFAZFPoEfFbITlM1O8RSwez9KwPgSz2Eb/nJW5G54umSjfZbCF2g==",
+    "FUNCTIONS_WORKER_RUNTIME": "CfDJ8H2HWqp9aP5OiD7QHm+DAxKydAY51qpxROkZtqNP+oo4+B9U0Lx1eBkmW2+85MY2igDyrAqDH2nIg5DKxfbKPG46KL8XGZiYOTF8W6cIk1FtcFgPCNWlQF6qfGdZOInIhw==",
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "CfDJ8H2HWqp9aP5OiD7QHm+DAxLK+tMq4qvDdbdAbrPsNrOty7ZJSj5//Jm5YWeZdvGYisfKJMVpqpzBq0pObdjhxLuxkj59PAWMm3yX/GwHy2V2xpOTaUfBUQTUfv8Ys/H8yp7y/MCi4HnQsJya86jzthuRsLfyQ+nz49FlpVdlykj9dZ6Qx2fypV7epwpLKl4QA92AmYJvh8sLqeF46RqgENMLmK4nfelZ1sxoL4IYjDMaIIPlz7KN7uLxx1uPu88VbYpBySojirZzctF8BiPbhANwEjBR3joZ/jtPHmwTeuBbDfnadRWFPTz6GVEFb94V6deZ5j1BpW2vLlPeb47TvwD6gs/4xZDmyponLpd3ujwr9I7laF+NcFptaJuwrb+dGA==",
+    "FUNCTIONS_EXTENSION_VERSION": "CfDJ8H2HWqp9aP5OiD7QHm+DAxKolkfavtcjv/Fk0jhipUUhusAcKv/NaoKFroGT99cAzq9hDY2bSpA2RKkUOxkCjZahQ6xAX/HakrUphs9r/mYWnghZ2oL/EHhHhibuwnWtXA==",
+    "KeyVault:KeyVaultUri": "CfDJ8H2HWqp9aP5OiD7QHm+DAxLBwn2JiHKNCx9kCw/jV2YH+tsrTfXmZknAEMwulbPXw8j9iMzBr/I1eSh/PiHYajxWbF/7HIRuUNgfl1KCjOzyJgpFQNVhmIeGVfcKYLbL4vCH/sqE9Lz/UcTCTsoujsxTedvvY+5RyD/DqM6t8RnW",
+    "CosmosDb:DatabaseId": "CfDJ8H2HWqp9aP5OiD7QHm+DAxL4QmcujIzLAISTPFS5YdP/NEQWp1F7pvRdw9qvgkFd154A7zAoJx5zWF99vE2b/mfbGosqCiXMyZeSAD5+Bh2JR4Gi1b4/G+7fl0VOWtBlfw==",
+    "CosmosDb:ContainerId": "CfDJ8H2HWqp9aP5OiD7QHm+DAxLwjrdAvPQn0hZNUqrFuCG1vYqwvaQqaft9QkHSPLkdx1RmLaYwQnqolJDSG7wdF2oCyirjAkNnCUzJeXF7zxOUQKF7x3KuIePMF06tE5IL1w==",
+    "CosmosDb:ConnectionStringSecretName": "CfDJ8H2HWqp9aP5OiD7QHm+DAxKOz8oQJKj4eKdmwwix8Y4KU8DcKXK2m6zXnNSep3FyXMAqI5MALdtBye0VjA+DfMHoGlhMB9mpRRMLbGrFSkmMQ33XWb4JnWMnXoX4bYR5mzErfELFFOJOKPS4NG0ERR0=",
+    "WEBSITE_CONTENTSHARE": "CfDJ8H2HWqp9aP5OiD7QHm+DAxJtozT3fF85SXk1xFv32K4crnNmjyX1PTn1bJzt0+onwLj2JA0qRNaKsVXI0IOlYdeHrUIVcU7GYb2BK1mCfE8V7V4HCkLJAVDZsPk6Zm6NG88cUnrKV6XtrlyHsUp9LVE="
+  },
+  "ConnectionStrings": {}
 }
