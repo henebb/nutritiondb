@@ -1,89 +1,80 @@
 using System.Net;
 using System.Text.Json;
 using Azure.Core.Serialization;
-using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace NutritionDbApi;
 
-public static class NutritionFunctions
+public class NutritionFunctions
 {
     [Function("Get all nutritions")]
-    public static async Task<HttpResponseData> Run(
+    public async Task<HttpResponseData> GetAll(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "nutritions")] HttpRequestData req,
-        FunctionContext executionContext)
+        FunctionContext executionContext
+    )
     {
         var response = req.CreateResponse(HttpStatusCode.OK);
-
-        var connectionString = Environment.GetEnvironmentVariable("CosmosDb:ConnectionString")!;
-        var databaseId = Environment.GetEnvironmentVariable("CosmosDb:DatabaseId")!;
-        var containerId = Environment.GetEnvironmentVariable("CosmosDb:ContainerId")!;
-
-        using var client = new CosmosClient(
-            connectionString,
-            // Use camel-casing
-            new CosmosClientOptions
-            {
-                SerializerOptions = new CosmosSerializationOptions
-                {
-                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                }
-            }
-        );
-
-        var itemsToReturn = new List<NutritionReturnItem>();
-
-        var container = client.GetContainer(databaseId, containerId);
-        var queryable = container.GetItemLinqQueryable<NutritionItem>();
-        using var feedIterator = queryable.ToFeedIterator();
-        while (feedIterator.HasMoreResults) 
-        {
-            var feedResponse = await feedIterator.ReadNextAsync();
-
-            itemsToReturn.AddRange(
-                feedResponse.Select(item => new NutritionReturnItem 
-                {
-                    Short = item.Id,
-                    Name = item.Name,
-                    Description = item.Description,
-                    Weight = item.Weight,
-                    Kcal = item.Kcal,
-                    Proteins = item.Proteins,
-                    Fat = item.Fat,
-                    Carbs = item.Carbs
-                })
-            );
-        }
+        
+        using IServeNutritionCosmos serveNutritionCosmos = new NutritionCosmosService();
+        var allNutritions = await serveNutritionCosmos.GetAllAsync();
 
         var webSerializer = new JsonObjectSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web));
-        await response.WriteAsJsonAsync(itemsToReturn, webSerializer);
+        await response.WriteAsJsonAsync(allNutritions, webSerializer);
 
         return response;
     }
-}
+    
+    [Function("Check if id is available")]
+    public async Task<HttpResponseData> IsAvailable(
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "nutritions/check/{id}")] HttpRequestData req,
+        string id,
+        FunctionContext executionContext
+    )
+    {
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        
+        using IServeNutritionCosmos serveNutritionCosmos = new NutritionCosmosService();
+        var exists = await serveNutritionCosmos.IdExists(id);
 
-internal class NutritionItem
-{
-    public string Id { get; set; } = "";
-    public string Name { get; set; } = "";
-    public string Description { get; set; } = "";
-    public double Weight { get; set; } = 0.0;
-    public double Kcal { get; set; } = 0.0;
-    public double Proteins { get; set; } = 0.0;
-    public double Fat { get; set; } = 0.0;
-    public double Carbs { get; set; } = 0.0;
-}
+        var webSerializer = new JsonObjectSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        await response.WriteAsJsonAsync(new
+        {
+            IsAvailable = !exists
+        }, webSerializer);
 
-internal class NutritionReturnItem
-{
-    public string Short { get; set; } = "";
-    public string Name { get; set; } = "";
-    public string Description { get; set; } = "";
-    public double Weight { get; set; } = 0.0;
-    public double Kcal { get; set; } = 0.0;
-    public double Proteins { get; set; } = 0.0;
-    public double Fat { get; set; } = 0.0;
-    public double Carbs { get; set; } = 0.0;
+        return response;
+    }
+    
+    [Function("Update/Add nutrition")]
+    public async Task<HttpResponseData> Upsert(
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "nutritions/add")] HttpRequestData req,
+        FunctionContext executionContext
+    )
+    {
+        using var streamReader = new StreamReader(req.Body);
+        var requestBody = await streamReader.ReadToEndAsync();
+        // Use JsonSerializerDefaults.Web to allow camelCase.
+        var nutritionDto = JsonSerializer.Deserialize<NutritionDto>(requestBody, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        if (nutritionDto == null)
+        {
+            var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+
+            await badRequestResponse.WriteAsJsonAsync(new
+            {
+                Message = "Invalid data passed. Unable to deserialize."
+            });
+            
+            return badRequestResponse;
+        }
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        using IServeNutritionCosmos serveNutritionCosmos = new NutritionCosmosService();
+        var updatedItem = await serveNutritionCosmos.UpsertItemAsync(nutritionDto);
+
+        var webSerializer = new JsonObjectSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        await response.WriteAsJsonAsync(updatedItem, webSerializer);
+
+        return response;
+    }
 }
