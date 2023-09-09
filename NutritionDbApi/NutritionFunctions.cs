@@ -49,7 +49,7 @@ public class NutritionFunctions
     
     [Function("Update/Add nutrition")]
     public async Task<HttpResponseData> Upsert(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "nutritions/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "nutritions/upsert")] HttpRequestData req,
         FunctionContext executionContext
     )
     {
