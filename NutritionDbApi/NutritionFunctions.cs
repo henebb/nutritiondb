@@ -15,10 +15,10 @@ public class NutritionFunctions
         FunctionContext executionContext
     )
     {
-        var response = req.CreateResponse(HttpStatusCode.OK);
+       var response = req.CreateResponse(HttpStatusCode.OK);
         
-        using IServeNutritionCosmos serveNutritionCosmos = new NutritionCosmosService();
-        var allNutritions = await serveNutritionCosmos.GetAllAsync();
+        using IServeNutritionData serveNutritionData = new NutritionDataService();
+        var allNutritions = await serveNutritionData.GetAllAsync();
 
         var webSerializer = new JsonObjectSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web));
         await response.WriteAsJsonAsync(allNutritions, webSerializer);
@@ -35,8 +35,8 @@ public class NutritionFunctions
     {
         var response = req.CreateResponse(HttpStatusCode.OK);
         
-        using IServeNutritionCosmos serveNutritionCosmos = new NutritionCosmosService();
-        var exists = await serveNutritionCosmos.IdExists(id);
+        using IServeNutritionData serveNutritionData = new NutritionDataService();
+        var exists = await serveNutritionData.IdExists(id);
 
         var webSerializer = new JsonObjectSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web));
         await response.WriteAsJsonAsync(new
@@ -69,8 +69,8 @@ public class NutritionFunctions
             return badRequestResponse;
         }
         var response = req.CreateResponse(HttpStatusCode.OK);
-        using IServeNutritionCosmos serveNutritionCosmos = new NutritionCosmosService();
-        var updatedItem = await serveNutritionCosmos.UpsertItemAsync(nutritionDto);
+        using IServeNutritionData serveNutritionData = new NutritionDataService();
+        var updatedItem = await serveNutritionData.UpsertItemAsync(nutritionDto);
 
         var webSerializer = new JsonObjectSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web));
         await response.WriteAsJsonAsync(updatedItem, webSerializer);
